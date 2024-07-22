@@ -11,45 +11,40 @@ plt.ylabel("Laba bersih perusahaan")
 plt.show()
 
 
-def derivative_of_cost_in_respect_to_w(x, y, weight, bias):
+def compute_derivatives(x, y, weight, bias):
     m = len(x)
-    derivative = 0
+    derivative_w = 0
+    derivative_b = 0
     for i in range(m):
         f_wb = weight * x[i] + bias
-        cost = (f_wb - y[i]) * x[i]
-        derivative += cost
-    derivative /= m
-    return derivative
+        derivative_of_cost_wrt_w = (f_wb - y[i]) * x[i]
+        derivative_of_cost_wrt_b = (f_wb - y[i])
+        derivative_w += derivative_of_cost_wrt_w
+        derivative_b += derivative_of_cost_wrt_b
+    derivative_w /= m
+    derivative_b /= m
+    return derivative_w, derivative_b
 
 
-def derivative_of_cost_in_respect_to_b(x, y, weight, bias):
-    m = len(x)
-    derivative = 0
-    for i in range(m):
-        f_wb = weight * x[i] + bias
-        cost = (f_wb - y[i])
-        derivative += cost
-    derivative /= m
-    return derivative
+def gradient_descent(x, y, weight=0, bias=0, alpha=0.1):
+    weight = weight
+    bias = bias
+    learning_rate = alpha
+    not_converged = True
 
+    while not_converged:
+        dw, db = compute_derivatives(x, y, weight, bias)
 
-w = 0
-b = 0
-learning_rate = 0.1
-not_converged = True
+        temp_w = weight - learning_rate * dw
+        temp_b = bias - learning_rate * db
 
-while not_converged:
-    d_w = derivative_of_cost_in_respect_to_w(x_train, y_train, w, b)
-    d_b = derivative_of_cost_in_respect_to_b(x_train, y_train, w, b)
+        if (temp_w == weight) and (temp_b == bias):
+            not_converged = False
 
-    temp_w = w - learning_rate * d_w
-    temp_b = b - learning_rate * d_b
+        weight = temp_w
+        bias = temp_b
 
-    if (temp_w == w) and (temp_b == b):
-        not_converged = False
-
-    w = temp_w
-    b = temp_b
+    return weight, bias
 
 
 def compute_line(x, weight, bias):
@@ -60,6 +55,7 @@ def compute_line(x, weight, bias):
     return f_wb
 
 
+w, b = gradient_descent(x_train, y_train)
 regression_line = compute_line(x_train, w, b)
 plt.plot(x_train, regression_line, c='b', label='prediction')
 plt.scatter(x_train, y_train, marker='x', c='r', label='reality')
