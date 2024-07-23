@@ -1,0 +1,10 @@
+season,age,diseases,accident,surgicalIntervention,highFeversInTheLastYear,alcoholFrequency,smokingHabit,numberOfHoursSpentSittingPerday,diagnosis
+-0.33,0.69,0,1,1,0,0.8,0,0.88,N
+-0.33,0.94,1,0,1,0,0.8,1,0.31,O
+-0.33,0.5,1,0,0,0,1,-1,0.5,N
+-0.33,0.75,0,1,1,0,1,-1,0.38,N
+-0.33,0.67,1,1,0,0,0.8,-1,0.5,O
+-0.33,0.67,1,0,1,0,0.8,0,0.5,N
+-0.33,0.67,0,0,0,-1,0.8,-1,0.44,N
+-0.33,1,1,1,1,0,0.6,-1,0.38,N
+1,0.64,0,0,1,0,0.8,-1,0.25,N

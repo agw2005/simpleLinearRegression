@@ -1,14 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
-x_train = np.array([1.5, 1.0, 2.8, 0.4, 1.3, 2.0, 3.1, 4.2, 0.9, 2.5, 3.6, 4.0, 2.2, 3.3, 1.8])
-y_train = np.array([3.6, 2.8, 5.4, 1.9, 2.9, 4.3, 6.2, 8.0, 2.5, 5.0, 7.3, 8.4, 4.7, 6.5, 4.0])
 
-plt.scatter(x_train, y_train, marker='x', c='r')
-plt.title("Biaya iklan dan laba bersih")
-plt.xlabel("Biaya iklan perusahaan")
-plt.ylabel("Laba bersih perusahaan")
-plt.show()
+data = pd.read_csv('fertility_Diagnosis.csv')
+x_train = data['age'].to_numpy()*18
+y_train = data['numberOfHoursSpentSittingPerday'].to_numpy()
+
+
+def rescale(arr):
+    max_value = arr.max()
+    return arr/max_value, max_value
 
 
 def compute_derivatives(x, y, weight, bias):
@@ -26,7 +28,7 @@ def compute_derivatives(x, y, weight, bias):
     return derivative_w, derivative_b
 
 
-def gradient_descent(x, y, weight=0, bias=0, alpha=0.1):
+def gradient_descent(x, y, alpha=0.001, weight=0, bias=0):
     weight = weight
     bias = bias
     learning_rate = alpha
@@ -47,20 +49,29 @@ def gradient_descent(x, y, weight=0, bias=0, alpha=0.1):
     return weight, bias
 
 
-def compute_line(x, weight, bias):
+def compute_regression_line(x, y, weight, bias, title=None, label_x=None, label_y=None):
     m = len(x)
-    f_wb = np.zeros(m)
+    prediction_line = np.zeros(m)
     for i in range(m):
-        f_wb[i] = weight * x[i] + bias
-    return f_wb
+        prediction_line[i] = weight * x[i] + bias
+
+    plt.plot(x, prediction_line, c='b', label='prediction')
+    plt.scatter(x, y, marker='x', c='r', label='reality')
+    plt.title(title)
+    plt.xlabel(label_x)
+    plt.ylabel(label_y)
+    plt.legend()
+    plt.show()
+    return None
 
 
-w, b = gradient_descent(x_train, y_train)
-regression_line = compute_line(x_train, w, b)
-plt.plot(x_train, regression_line, c='b', label='prediction')
-plt.scatter(x_train, y_train, marker='x', c='r', label='reality')
-plt.title("Biaya iklan dan laba bersih")
-plt.xlabel("Biaya iklan perusahaan")
-plt.ylabel("Laba bersih perusahaan")
-plt.legend()
-plt.show()
+x_train_rescaled, x_max = rescale(x_train)
+y_train_rescaled, y_max = rescale(y_train)
+
+w_rescaled, b_rescaled = gradient_descent(x_train_rescaled, y_train_rescaled)
+
+w = w_rescaled * (y_max / x_max)
+b = b_rescaled * y_max
+
+compute_regression_line(x_train, y_train, w, b)
+print(f"w = {w}\nb = {b}")
