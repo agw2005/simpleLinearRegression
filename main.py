@@ -75,3 +75,10 @@ b = b_rescaled * y_max
 
 compute_regression_line(x_train, y_train, w, b)
 print(f"w = {w}\nb = {b}")
+
+"""
+# 100 examples, took 267--278 seconds
+
+Citation:
+Gil,David and Girela,Jose. (2013). Fertility. UCI Machine Learning Repository. https://doi.org/10.24432/C5Z01Z.
+"""
