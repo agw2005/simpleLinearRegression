@@ -15,16 +15,10 @@ def rescale(arr):
 
 def compute_derivatives(x, y, weight, bias):
     m = len(x)
-    derivative_w = 0
-    derivative_b = 0
-    for i in range(m):
-        f_wb = weight * x[i] + bias
-        derivative_of_cost_wrt_w = (f_wb - y[i]) * x[i]
-        derivative_of_cost_wrt_b = (f_wb - y[i])
-        derivative_w += derivative_of_cost_wrt_w
-        derivative_b += derivative_of_cost_wrt_b
-    derivative_w /= m
-    derivative_b /= m
+    f_wb = weight * x + bias
+    error = f_wb - y
+    derivative_w = np.dot(error, x) / m
+    derivative_b = error.mean()
     return derivative_w, derivative_b
 
 
@@ -73,11 +67,14 @@ w_rescaled, b_rescaled = gradient_descent(x_train_rescaled, y_train_rescaled)
 w = w_rescaled * (y_max / x_max)
 b = b_rescaled * y_max
 
-compute_regression_line(x_train, y_train, w, b)
+compute_regression_line(x_train, y_train, w, b, title="Age vs. Hours Spent Sitting", label_x="Age", label_y="Hours Spent Sitting")
 print(f"w = {w}\nb = {b}")
 
 """
-# 100 examples, took 267--278 seconds
+100 examples, took 37 -- 41 seconds
+
+w = -0.037766034512644465
+b = 0.8615785876012092
 
 Citation:
 Gil,David and Girela,Jose. (2013). Fertility. UCI Machine Learning Repository. https://doi.org/10.24432/C5Z01Z.
