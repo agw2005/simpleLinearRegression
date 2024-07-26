@@ -44,11 +44,7 @@ def gradient_descent(x, y, alpha=0.001, weight=0, bias=0):
 
 
 def compute_regression_line(x, y, weight, bias, title=None, label_x=None, label_y=None):
-    m = len(x)
-    prediction_line = np.zeros(m)
-    for i in range(m):
-        prediction_line[i] = weight * x[i] + bias
-
+    prediction_line = x * weight + bias
     plt.plot(x, prediction_line, c='b', label='prediction')
     plt.scatter(x, y, marker='x', c='r', label='reality')
     plt.title(title)
@@ -71,8 +67,6 @@ compute_regression_line(x_train, y_train, w, b, title="Age vs. Hours Spent Sitti
 print(f"w = {w}\nb = {b}")
 
 """
-100 examples, took 37 -- 41 seconds
-
 w = -0.037766034512644465
 b = 0.8615785876012092
 
